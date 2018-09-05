@@ -1,0 +1,11 @@
+.context-btn-container {
+    padding: 8px 8px 8px 20px;
+    background-color: #f6f6f6;
+    text-align: right;
+}
+
+.tab-pane {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-top: 0;
+}
