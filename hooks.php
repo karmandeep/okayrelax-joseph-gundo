@@ -427,12 +427,13 @@ HTML;
                 //Add Edit CustomField Feature
                 return <<<HTML
 <script type="text/javascript">
-
+//Commented as it was causing Issues with Date Selection Field.
+/*
 $(document).ready(function(){
     
     $("input[name='customfield[{$v['id']}]'").prop('type', 'date');
 });
- 
+ */
 </script>
 HTML;
             }
