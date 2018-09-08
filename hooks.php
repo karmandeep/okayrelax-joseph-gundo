@@ -528,7 +528,40 @@ add_hook('ClientAreaPrimarySidebar', 1, function ($primarySidebar) {
 
         $assistant = $department_name;
 
-
+		/*Capsule::table("tblhosting as host")
+            ->join("tblcustomfieldsvalues as val", "val.relid", "=", "host.id")
+            ->join("tblcustomfields as cust", "cust.id", "=", "val.fieldid")
+            ->where("host.id", $user_relation->serviceid)
+            ->where("cust.fieldname", "Assistant")
+            ->select("val.value")
+            ->first();*/
+		
+        if(isset($_GET['tid']) && $_GET['tid'] != NULL):          
+        
+            $ticket_id = $_GET['tid'];
+            
+            $duedate_qry = Capsule::table('tblcustomfieldsvalues')
+                      ->join('tblcustomfields', 'tblcustomfieldsvalues.fieldid', '=', 'tblcustomfields.id')
+                      ->join('tbltickets', 'tblcustomfieldsvalues.relid', '=', 'tbltickets.id')
+                      ->where('tblcustomfields.type', 'support')
+                      ->where('tbltickets.tid', $ticket_id)
+                      ->where('tblcustomfields.fieldname', 'Due Date')
+                      ->select('tblcustomfieldsvalues.relid as ticketid' , 'tblcustomfields.fieldname' , 'tblcustomfieldsvalues.value')
+                      ->first();
+    
+            
+            if(count($duedate_qry) > 0) {
+                if (!is_null($primarySidebar->getChild('Ticket Information'))) {
+                
+                    $primarySidebar->getChild('Ticket Information')
+                    ->addChild('due-date')
+                    ->setClass('ticket-details-children')
+                    ->setLabel('<span class="title">' . $duedate_qry->fieldname . '</span><br>' . $duedate_qry->value) 
+                    ->setOrder(100);
+                }
+            }
+        endif;
+        
         //Add Task Menu
         $newMenu = $primarySidebar->addChild(
             'taskCredits',
